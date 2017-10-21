@@ -1,6 +1,7 @@
 package model.player.type;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import controller.IController;
 import model.IGameLogic;
@@ -60,18 +61,25 @@ public abstract class AbstractPlayer implements IPlayer {
 
   @Override
   public void removeCardFromHand(ICard card) {
-    
+    hand.remove(card);
   }
 
   @Override
   public boolean needsToDrawCard(ICard currentCard) {
-    // TODO Auto-generated method stub
-    return false;
+    for (Iterator i = hand.iterator(); i.hasNext();) {
+      ICard card = (ICard) i.next();
+      if (card.isPlayableOver(currentCard)) {
+        return false;
+      }
+    }
+    return true;
   }
 
   @Override
   public ICard getCardFromHand(int number) {
-    // TODO Auto-generated method stub
+    if (hand.size() >= number) {
+      return hand.get(number);
+    }
     return null;
   }
 
