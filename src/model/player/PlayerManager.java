@@ -4,42 +4,66 @@ import java.util.ArrayList;
 
 import model.player.type.IPlayer;
 
+/**
+ * Manager for the logic of the player list.
+ * 
+ * @author Pedro Belmonte
+ *
+ */
 public class PlayerManager implements IPlayerManager {
-  
+
   private IPlayer currentPlayer;
   private ArrayList<IPlayer> playerList;
-  private IPlayerListBuilder listBuilder;
-  
-  public PlayerManager() {
-    listBuilder = new PlayerListBuilder();
-    playerList = listBuilder.buildPlayerList();
-    currentPlayer = playerList.get((int) Math.floor(Math.random() * playerList.size()));
+  private Direction direction;
+  private int currentPlayerNumber;
+  private int nextPlayerNumber;
+
+  /**
+   * PlayerManager constructor. Builds the playerList obtained from the PlayerListBuilder and
+   * initializes the current player, the next player and the direction of the game.
+   * 
+   * @param playerBuilder
+   */
+  public PlayerManager(IPlayerListBuilder playerBuilder) {
+    playerList = playerBuilder.buildPlayerList();
+    currentPlayerNumber = (int) Math.floor(Math.random() * playerList.size());
+    currentPlayer = playerList.get((currentPlayerNumber + 1) % playerList.size());
+    direction = Direction.COUNTERCLOCKWISE;
+    nextPlayerNumber = (currentPlayerNumber + 1) % playerList.size();
   }
 
   @Override
   public IPlayer getCurrentPlayer() {
-    return this.currentPlayer;
+    return currentPlayer;
   }
 
   @Override
   public ArrayList<IPlayer> getPlayers() {
-    return this.playerList;
+    return playerList;
   }
 
   @Override
   public void invertDirection() {
-        
+    direction = (direction.getValue() == -1) ? Direction.COUNTERCLOCKWISE : Direction.CLOCKWISE;
+    int aux = currentPlayerNumber + direction.getValue();
+    aux = (aux > 0) ? aux : playerList.size() + aux;
+    nextPlayerNumber = aux % playerList.size();
   }
 
   @Override
   public void startTurn() {
-        
+    currentPlayerNumber = nextPlayerNumber;
+    int aux = currentPlayerNumber + direction.getValue();
+    aux = (aux > 0) ? aux : playerList.size() + aux;
+    nextPlayerNumber = aux % playerList.size();
+    currentPlayer = playerList.get(currentPlayerNumber);
   }
 
   @Override
   public void skipPlayer() {
-    // TODO Auto-generated method stub
-    
+    int aux = currentPlayerNumber + 2 * direction.getValue();
+    aux = (aux > 0) ? aux : playerList.size() + aux;
+    nextPlayerNumber = aux % playerList.size();
   }
 
 }

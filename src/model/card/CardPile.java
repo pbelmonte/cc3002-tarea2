@@ -3,37 +3,44 @@ package model.card;
 import java.util.Collections;
 import java.util.Stack;
 
-import model.card.deck.DeckStrategy;
 import model.card.type.ICard;
 
+/**
+ * Card pile logic for the game.
+ * 
+ * @author Pedro Belmonte
+ *
+ */
 public class CardPile implements ICardPile {
 
-  private Stack stack;
+  private Stack<ICard> stack;
 
+  /**
+   * CardPile constructor. It initializes the stack.
+   */
   public CardPile() {
-    stack = new Stack();
+    stack = new Stack<ICard>();
   }
 
   @Override
   public int getSize() {
-    return 0;
+    return stack.size();
   }
 
   @Override
   public ICard pushCard(ICard newCard) {
-    // TODO Auto-generated method stub
-    return null;
+    stack.push(newCard);
+    return newCard;
   }
 
   @Override
   public ICard popCard() {
-    // TODO Auto-generated method stub
-    return null;
+    return stack.pop();
   }
 
   @Override
   public ICard peekCard() {
-    return null;
+    return stack.peek();
   }
 
   @Override
@@ -43,14 +50,18 @@ public class CardPile implements ICardPile {
 
   @Override
   public boolean isEmpty() {
-    // TODO Auto-generated method stub
-    return false;
+    return stack.isEmpty();
   }
 
   @Override
   public void pushCards(ICardPile otherPile) {
-    // TODO Auto-generated method stub
-
+    ICardPile aux = new CardPile();
+    while (otherPile.getSize() != 0) {
+      aux.pushCard(otherPile.popCard());
+    }
+    while (aux.getSize() != 0) {
+      this.pushCard(aux.popCard());
+    }
   }
 
 }

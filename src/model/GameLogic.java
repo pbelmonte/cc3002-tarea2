@@ -3,24 +3,37 @@ package model;
 import java.util.ArrayList;
 
 import controller.IController;
-import model.card.CardPilesManager;
-import model.card.ICardPile;
 import model.card.ICardPilesManager;
 import model.card.type.ICard;
 import model.player.IPlayerManager;
-import model.player.PlayerManager;
 import model.player.type.IPlayer;
 
+/**
+ * Class that defines the logic used by the game.
+ * 
+ * @author Pedro Belmonte
+ *
+ */
 public class GameLogic implements IGameLogic {
 
   private IPlayerManager playerMngr;
   private ICardPilesManager pilesMngr;
   private ArrayList<ICard> drawWell;
 
-  public GameLogic(ICardPile deck) {
-    playerMngr = new PlayerManager();
-    pilesMngr = new CardPilesManager(deck);
+  /**
+   * GameLogic constructor. It initializes the PlayerManager, CardPilesManager and the drawWell.
+   * Also, it deals the cards to the players.
+   * 
+   * @param playerMngr PlayerManager used in the game
+   * @param pilesMngr CardPilesManager used in the game
+   */
+  public GameLogic(IPlayerManager playerMngr, ICardPilesManager pilesMngr) {
+    this.playerMngr = playerMngr;
+    this.pilesMngr = pilesMngr;
     drawWell = new ArrayList<ICard>();
+    for (int i = 0; i < playerMngr.getPlayers().size(); i++) {
+      pilesMngr.addCardsToPlayer(playerMngr.getPlayers().get(i), 7);
+    }
   }
 
   @Override
@@ -30,67 +43,83 @@ public class GameLogic implements IGameLogic {
 
   @Override
   public IPlayer getCurrentPlayer() {
-    return this.playerMngr.getCurrentPlayer();
+    return playerMngr.getCurrentPlayer();
   }
 
   @Override
   public ICard getCurrentPlayedCard() {
-    return this.pilesMngr.getCurrentPlayedCard();
+    return pilesMngr.getCurrentPlayedCard();
   }
 
   @Override
   public void autoShoutUNO(IController ctrl) {
-
+    if (getCurrentPlayer().getHandSize() == 1) {
+      getCurrentPlayer().setSaidUNO(true);
+      ctrl.showMessage("[" + getCurrentPlayer() + "]: UNO!");
+    }
   }
 
   @Override
   public void startTurn(IController ctrl) {
-    // TODO Auto-generated method stub
-
+    try {
+      Thread.sleep(1000);
+    } catch (InterruptedException ex) {
+      Thread.currentThread().interrupt();
+    }
+    autoShoutUNO(ctrl);
+    playerMngr.startTurn();
+    if (!isDrawWellEmpty()) {
+      drawCardsFromWell(getCurrentPlayer(), ctrl);
+      playerMngr.startTurn();
+    }
   }
 
   @Override
   public void skipPlayer() {
-    // TODO Auto-generated method stub
-
+    playerMngr.skipPlayer();
   }
 
   @Override
   public void addToDrawWell(int number) {
-    this.drawWell.addAll(this.pilesMngr.drawCards(number));
+    drawWell.addAll(pilesMngr.drawCards(number));
   }
 
   @Override
   public void resetDrawWell() {
-    this.drawWell.clear();
+    drawWell.clear();
   }
 
   @Override
   public boolean isDrawWellEmpty() {
-    return this.drawWell.isEmpty();
+    return drawWell.isEmpty();
   }
 
   @Override
   public void drawCardsFromWell(IPlayer player, IController ctrl) {
-
+    ctrl.showMessage("[" + player.toString() + " roba " + drawWell.size() + "]");
+    player.addToHand(drawWell);
+    resetDrawWell();
   }
 
   @Override
   public void invertDirection() {
-    // TODO Auto-generated method stub
-
+    playerMngr.invertDirection();
   }
 
   @Override
   public boolean playCard(ICard playedCard, IController ctrl) {
-    // TODO Auto-generated method stub
-    return false;
+    if (playedCard.isDiscardable()) {
+      pilesMngr.discard(playedCard);
+      playedCard.executeAction(this, ctrl);
+      return true;
+    }
+    return true;
   }
 
   @Override
   public ICard drawOneCard(IPlayer player) {
-    // TODO Auto-generated method stub
-    return null;
+    ArrayList<ICard> card = pilesMngr.addCardsToPlayer(player, 1);
+    return card.get(0);
   }
 
   @Override

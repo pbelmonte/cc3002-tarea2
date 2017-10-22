@@ -7,15 +7,29 @@ import controller.IController;
 import model.IGameLogic;
 import model.card.type.Color;
 import model.card.type.ICard;
+import model.card.type.NullCard;
 
+/**
+ * Represents an abstract player.
+ * 
+ * @author Pedro Belmonte
+ *
+ */
 public abstract class AbstractPlayer implements IPlayer {
 
   private ArrayList<ICard> hand;
   private boolean saidUNO;
+  private int player;
 
-  public AbstractPlayer() {
+  /**
+   * AbstractPlayer constructor. Initializes the hand, the saidUNO state and the player number.
+   * 
+   * @param player
+   */
+  public AbstractPlayer(int player) {
     hand = new ArrayList<ICard>();
     saidUNO = false;
+    this.player = player;
   }
 
   @Override
@@ -61,12 +75,14 @@ public abstract class AbstractPlayer implements IPlayer {
 
   @Override
   public void removeCardFromHand(ICard card) {
-    hand.remove(card);
+    if (card.isDiscardable()) {
+      hand.remove(card);
+    }
   }
 
   @Override
   public boolean needsToDrawCard(ICard currentCard) {
-    for (Iterator i = hand.iterator(); i.hasNext();) {
+    for (Iterator<ICard> i = hand.iterator(); i.hasNext();) {
       ICard card = (ICard) i.next();
       if (card.isPlayableOver(currentCard)) {
         return false;
@@ -77,10 +93,15 @@ public abstract class AbstractPlayer implements IPlayer {
 
   @Override
   public ICard getCardFromHand(int number) {
-    if (hand.size() >= number) {
+    if (hand.size() > number) {
       return hand.get(number);
     }
-    return null;
+    return NullCard.uniqueInstance();
+  }
+
+  @Override
+  public String toString() {
+    return "Jugador " + this.player;
   }
 
 }

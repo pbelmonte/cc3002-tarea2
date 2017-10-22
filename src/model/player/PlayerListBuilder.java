@@ -4,18 +4,31 @@ import java.util.ArrayList;
 
 import model.player.type.IPlayer;
 
+/**
+ * Class to build a player list.
+ * 
+ * @author Pedro Belmonte
+ *
+ */
 public class PlayerListBuilder implements IPlayerListBuilder {
+
+  private ArrayList<IPlayer> playerList;
+
+  /**
+   * PlayerList constructor. Initializes the list.
+   */
+  public PlayerListBuilder() {
+    playerList = new ArrayList<IPlayer>();
+  }
 
   @Override
   public void addPlayer(IPlayer player) {
-    // TODO Auto-generated method stub
-    
+    playerList.add(player);
   }
 
   @Override
   public ArrayList<IPlayer> buildPlayerList() {
-    // TODO Auto-generated method stub
-    return null;
+    return playerList;
   }
 
 }

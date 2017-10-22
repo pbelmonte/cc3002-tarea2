@@ -4,49 +4,47 @@ import controller.IController;
 import model.IGameLogic;
 
 /**
- * Abstract color card, defines common functionalities to all cards except wild cards.
+ * Represents a wild card
  * 
  * @author Pedro Belmonte
  *
  */
-public abstract class AbstractColorCard implements ICard {
+public class WildCard implements ICard {
 
   private Color color;
   private Symbol symbol;
 
   /**
-   * AbstractColorCard constructor. Initializes the color and the symbol.
-   * 
-   * @param color Color of the card
-   * @param symbol Symbol of the card
+   * WildCard constructor. Sets its color and symbol.
    */
-  public AbstractColorCard(Color color, Symbol symbol) {
-    this.color = color;
-    this.symbol = symbol;
+  public WildCard() {
+    this.color = Color.NONE;
+    setSymbol(Symbol.WILD);
   }
 
   @Override
   public boolean isPlayableOver(ICard otherCard) {
-    return this.color == otherCard.getColor() || this.symbol == otherCard.getSymbol();
-  }
-
-  @Override
-  public boolean isFirstPlayable() {
     return true;
   }
 
   @Override
+  public boolean isFirstPlayable() {
+    return false;
+  }
+
+  @Override
   public Color getColor() {
-    return this.color;
+    return color;
   }
 
   @Override
   public Symbol getSymbol() {
-    return this.symbol;
+    return symbol;
   }
 
   @Override
   public void executeAction(IGameLogic game, IController ctrl) {
+    setColor(game.getCurrentPlayer().selectColor(game, ctrl));
     ctrl.updatePlayedCard();
   }
 
@@ -58,6 +56,24 @@ public abstract class AbstractColorCard implements ICard {
   @Override
   public String toString() {
     return symbol.getName() + " " + color.getName();
+  }
+
+  /**
+   * Sets the color of the card.
+   * 
+   * @param color New color
+   */
+  void setColor(Color color) {
+    this.color = color;
+  }
+
+  /**
+   * Sets the symbol of the card.
+   * 
+   * @param color New symbol
+   */
+  void setSymbol(Symbol symbol) {
+    this.symbol = symbol;
   }
 
 }
