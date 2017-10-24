@@ -5,6 +5,7 @@ import model.card.ICardPile;
 import model.card.type.Color;
 import model.card.type.DrawFourCard;
 import model.card.type.DrawTwoCard;
+import model.card.type.ICard;
 import model.card.type.InvertCard;
 import model.card.type.NumberCard;
 import model.card.type.SkipCard;
@@ -69,6 +70,12 @@ public class DeckBuilder implements IDeckBuilder {
       deck.pushCard(new WildCard());
       deck.pushCard(new DrawFourCard());
     }
+    return this;
+  }
+
+  @Override
+  public IDeckBuilder addCard(ICard card) {
+    deck.pushCard(card);
     return this;
   }
 

@@ -1,6 +1,7 @@
 package model.card.deck;
 
 import model.card.ICardPile;
+import model.card.type.ICard;
 
 public interface IDeckBuilder {
 
@@ -10,6 +11,13 @@ public interface IDeckBuilder {
    * @return ICardPile with the created cards
    */
   public ICardPile build();
+
+  /**
+   * Adds a single card.
+   * 
+   * @return Itself
+   */
+  public IDeckBuilder addCard(ICard card);
 
   /**
    * Adds the numeric cards to the deck.

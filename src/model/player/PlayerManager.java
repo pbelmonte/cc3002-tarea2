@@ -44,10 +44,14 @@ public class PlayerManager implements IPlayerManager {
 
   @Override
   public void invertDirection() {
-    direction = (direction.getValue() == -1) ? Direction.COUNTERCLOCKWISE : Direction.CLOCKWISE;
-    int aux = currentPlayerNumber + direction.getValue();
-    aux = (aux > 0) ? aux : playerList.size() + aux;
-    nextPlayerNumber = aux % playerList.size();
+    if (getPlayers().size() > 2) {
+      direction = (direction.getValue() == -1) ? Direction.COUNTERCLOCKWISE : Direction.CLOCKWISE;
+      int aux = currentPlayerNumber + direction.getValue();
+      aux = (aux > 0) ? aux : playerList.size() + aux;
+      nextPlayerNumber = aux % playerList.size();
+    } else {
+      skipPlayer();
+    }
   }
 
   @Override

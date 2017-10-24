@@ -12,7 +12,7 @@ import model.card.type.NullCard;
  * @author Pedro Belmonte
  *
  */
-public class RandomPlayer extends AbstractPlayer {
+public class RandomPlayer extends AbstractPlayer implements IPlayer {
 
   /**
    * RandomPlayer constructor.
@@ -25,11 +25,6 @@ public class RandomPlayer extends AbstractPlayer {
 
   @Override
   public ICard getCardToPlay(IGameLogic game, IController ctrl) {
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException ex) {
-      Thread.currentThread().interrupt();
-    }
     ICard card = NullCard.uniqueInstance();
     ICard currentCard = game.getCurrentPlayedCard();
     if (this.needsToDrawCard(currentCard)) {

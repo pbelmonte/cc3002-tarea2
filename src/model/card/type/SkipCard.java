@@ -9,7 +9,7 @@ import model.IGameLogic;
  * @author Pedro Belmonte
  *
  */
-public class SkipCard extends AbstractColorCard {
+public class SkipCard extends AbstractColorCard implements ICard {
 
   /**
    * SkipCard constructor. Sets its color and symbol.

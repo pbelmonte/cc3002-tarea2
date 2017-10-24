@@ -6,7 +6,7 @@ package model.card.type;
  * @author Pedro Belmonte
  *
  */
-public class NumberCard extends AbstractColorCard {
+public class NumberCard extends AbstractColorCard implements ICard {
 
   /**
    * NumberCard constructor. Sets its color and symbol.

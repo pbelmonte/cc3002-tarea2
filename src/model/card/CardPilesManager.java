@@ -27,8 +27,8 @@ public class CardPilesManager implements ICardPilesManager {
     this.discard = new CardPile();
     ICard first = this.drawCard();
     while (!first.isFirstPlayable()) {
-      deck.pushCard(first);
-      deck.shuffle();
+      this.deck.pushCard(first);
+      this.deck.shuffle();
       first = this.drawCard();
     }
     this.discard(first);

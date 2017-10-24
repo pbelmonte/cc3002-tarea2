@@ -63,7 +63,7 @@ public class WildCard implements ICard {
    * 
    * @param color New color
    */
-  void setColor(Color color) {
+  public void setColor(Color color) {
     this.color = color;
   }
 

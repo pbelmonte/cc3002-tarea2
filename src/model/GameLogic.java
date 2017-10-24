@@ -61,11 +61,6 @@ public class GameLogic implements IGameLogic {
 
   @Override
   public void startTurn(IController ctrl) {
-    try {
-      Thread.sleep(1000);
-    } catch (InterruptedException ex) {
-      Thread.currentThread().interrupt();
-    }
     autoShoutUNO(ctrl);
     playerMngr.startTurn();
     if (!isDrawWellEmpty()) {
