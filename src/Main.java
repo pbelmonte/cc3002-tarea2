@@ -27,7 +27,7 @@ public class Main {
     ICardPile deck = new NormalDeck().createDeck();
     ICardPilesManager pilesMngr = new CardPilesManager(deck);
     IPlayerListBuilder playerBuilder = new PlayerListBuilder();
-    createPlayers(playerBuilder, 1, 1);
+    createPlayers(playerBuilder, 1, 3);
     IPlayerManager playerMngr = new PlayerManager(playerBuilder);
     IGameLogic game = new GameLogic(playerMngr, pilesMngr);
     ConsoleView view = new ConsoleView(game);

@@ -65,9 +65,10 @@ public class PlayerManager implements IPlayerManager {
 
   @Override
   public void skipPlayer() {
-    int aux = currentPlayerNumber + 2 * direction.getValue();
+    /*int aux = currentPlayerNumber + 2 * direction.getValue();
     aux = (aux >= 0) ? aux : playerList.size() + aux;
-    nextPlayerNumber = aux % playerList.size();
+    nextPlayerNumber = aux % playerList.size();*/
+    startTurn();
   }
 
   /**

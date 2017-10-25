@@ -147,6 +147,7 @@ public class ColorCardTest {
     playerMngr.startTurn();
     assertEquals(firstPlayer, game.getCurrentPlayer());
     
+    game.drawCardsFromWell(firstPlayer, ctrl);    
     assertTrue(game.isDrawWellEmpty());
     greenDrawTwo.executeAction(game, ctrl);
     assertFalse(game.isDrawWellEmpty());

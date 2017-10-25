@@ -30,8 +30,8 @@ public class CardPilesManagerTest {
     for (int i = 0; i < 50; i++) {
       pilesMngr.discard(cards.get(i));
     }
-    pilesMngr.drawCard();
-    assertEquals(50, pilesMngr.getDrawableCardsNumber());
+    pilesMngr.drawCards(4);
+    assertEquals(47, pilesMngr.getDrawableCardsNumber());
   }
 
   @Test
