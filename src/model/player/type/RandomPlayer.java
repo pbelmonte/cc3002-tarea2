@@ -12,7 +12,7 @@ import model.card.type.NullCard;
  * @author Pedro Belmonte
  *
  */
-public class RandomPlayer extends AbstractPlayer implements IPlayer {
+public class RandomPlayer extends AbstractPlayer {
 
   /**
    * RandomPlayer constructor.

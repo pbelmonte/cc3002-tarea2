@@ -9,7 +9,6 @@ import controller.IController;
 import controller.TestingController;
 import model.GameLogic;
 import model.IGameLogic;
-import model.card.CardPile;
 import model.card.CardPilesManager;
 import model.card.ICardPile;
 import model.card.ICardPilesManager;
@@ -27,11 +26,11 @@ import model.player.type.IPlayer;
 import model.player.type.RandomPlayer;
 
 public class GameLogicTest {
-  
+
   private IGameLogic game;
   private IController ctrl;
-  ICardPile deck;
-  ICardPilesManager pilesMngr;
+  private ICardPile deck;
+  private ICardPilesManager pilesMngr;
   private IPlayer firstPlayer;
   private ICard firstCard;
 
@@ -118,7 +117,7 @@ public class GameLogicTest {
 
   @Test
   public void testGetCurrentPlayedCard() {
-    assertEquals(firstCard, game.getCurrentPlayedCard());        
+    assertEquals(firstCard, game.getCurrentPlayedCard());
   }
 
   @Test
@@ -136,7 +135,7 @@ public class GameLogicTest {
     ctrl.playTurn(); // le quedan 2 cartas
     ctrl.playTurn();
     ctrl.playTurn(); // le queda 1 carta
-    assertTrue(game.getCurrentPlayer().hasSaidUNO());    
+    assertTrue(game.getCurrentPlayer().hasSaidUNO());
   }
 
   @Test

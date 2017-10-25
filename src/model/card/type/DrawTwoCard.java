@@ -9,7 +9,7 @@ import model.IGameLogic;
  * @author Pedro Belmonte
  *
  */
-public class DrawTwoCard extends AbstractColorCard implements ICard {
+public class DrawTwoCard extends AbstractColorCard {
 
   /**
    * DrawTwoCard constructor. Sets its color and symbol.

@@ -38,6 +38,7 @@ public class CardPilesManager implements ICardPilesManager {
   public void rebuildDeck() {
     ICard first = discard.popCard();
     deck.pushCards(discard);
+    deck.shuffle();
     discard.pushCard(first);
   }
 

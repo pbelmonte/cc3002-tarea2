@@ -5,6 +5,14 @@ import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import controller.IController;
+import controller.TestingController;
+import model.GameLogic;
+import model.IGameLogic;
+import model.card.CardPilesManager;
+import model.card.ICardPile;
+import model.card.ICardPilesManager;
+import model.card.deck.NormalDeck;
 import model.card.type.Color;
 import model.card.type.DrawTwoCard;
 import model.card.type.ICard;
@@ -12,6 +20,13 @@ import model.card.type.InvertCard;
 import model.card.type.NumberCard;
 import model.card.type.SkipCard;
 import model.card.type.Symbol;
+import model.player.Direction;
+import model.player.IPlayerListBuilder;
+import model.player.PlayerListBuilder;
+import model.player.PlayerManager;
+import model.player.type.HumanPlayer;
+import model.player.type.IPlayer;
+import model.player.type.RandomPlayer;
 
 public class ColorCardTest {
   
@@ -29,6 +44,9 @@ public class ColorCardTest {
   private static ICard blueSkip;
   private static ICard greenInvert;
   private static ICard yellowDrawTwo;
+  private static IGameLogic game;
+  private static IController ctrl;
+  private static PlayerManager playerMngr;
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
@@ -46,6 +64,15 @@ public class ColorCardTest {
     blueSkip = new SkipCard(Color.BLUE);
     greenInvert = new InvertCard(Color.GREEN);
     yellowDrawTwo = new DrawTwoCard(Color.YELLOW);
+    ICardPile deck = new NormalDeck().createDeck();
+    ICardPilesManager pilesMngr = new CardPilesManager(deck);
+    IPlayerListBuilder playerBuilder = new PlayerListBuilder();
+    playerBuilder.addPlayer(new HumanPlayer(1));
+    playerBuilder.addPlayer(new RandomPlayer(2));
+    playerBuilder.addPlayer(new RandomPlayer(3));
+    playerMngr = new PlayerManager(playerBuilder);
+    game = new GameLogic(playerMngr, pilesMngr);
+    ctrl = new TestingController(game);
   }
 
   @Test
@@ -105,6 +132,24 @@ public class ColorCardTest {
     assertEquals(Symbol.SKIP, redSkip.getSymbol());
     assertEquals(Symbol.INVERT, blueInvert.getSymbol());
     assertEquals(Symbol.DRAW_TWO, greenDrawTwo.getSymbol());
+  }
+  
+  @Test
+  public void testExecuteAction() {
+    Direction dir = playerMngr.getDirection();
+    blueInvert.executeAction(game, ctrl);
+    assertNotEquals(dir, playerMngr.getDirection());
+    
+    playerMngr.startTurn();
+    IPlayer firstPlayer = game.getCurrentPlayer();
+    playerMngr.startTurn();
+    redSkip.executeAction(game, ctrl);
+    playerMngr.startTurn();
+    assertEquals(firstPlayer, game.getCurrentPlayer());
+    
+    assertTrue(game.isDrawWellEmpty());
+    greenDrawTwo.executeAction(game, ctrl);
+    assertFalse(game.isDrawWellEmpty());
   }
 
   @Test

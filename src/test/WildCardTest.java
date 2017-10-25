@@ -2,9 +2,17 @@ package test;
 
 import static org.junit.Assert.*;
 
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 
+import controller.IController;
+import controller.TestingController;
+import model.GameLogic;
+import model.IGameLogic;
+import model.card.CardPilesManager;
+import model.card.ICardPile;
+import model.card.ICardPilesManager;
+import model.card.deck.NormalDeck;
 import model.card.type.Color;
 import model.card.type.DrawFourCard;
 import model.card.type.InvertCard;
@@ -12,16 +20,31 @@ import model.card.type.NumberCard;
 import model.card.type.SkipCard;
 import model.card.type.Symbol;
 import model.card.type.WildCard;
+import model.player.IPlayerListBuilder;
+import model.player.PlayerListBuilder;
+import model.player.PlayerManager;
+import model.player.type.HumanPlayer;
 
 public class WildCardTest {
-  
-  private static WildCard wild;
-  private static DrawFourCard four;
 
-  @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  private WildCard wild;
+  private DrawFourCard four;
+  private IGameLogic game;
+  private IController ctrl;
+  private PlayerManager playerMngr;
+
+  @Before
+  public void setUp() throws Exception {
     wild = new WildCard();
     four = new DrawFourCard();
+    ICardPile deck = new NormalDeck().createDeck();
+    ICardPilesManager pilesMngr = new CardPilesManager(deck);
+    IPlayerListBuilder playerBuilder = new PlayerListBuilder();
+    playerBuilder.addPlayer(new HumanPlayer(1));
+    playerBuilder.addPlayer(new HumanPlayer(2));
+    playerMngr = new PlayerManager(playerBuilder);
+    game = new GameLogic(playerMngr, pilesMngr);
+    ctrl = new TestingController(game);
   }
 
   @Test
@@ -36,8 +59,8 @@ public class WildCardTest {
 
   @Test
   public void testIsFirstPlayable() {
-   assertFalse(wild.isFirstPlayable());
-   assertFalse(wild.isFirstPlayable());
+    assertFalse(wild.isFirstPlayable());
+    assertFalse(wild.isFirstPlayable());
   }
 
   @Test
@@ -50,6 +73,18 @@ public class WildCardTest {
   public void testGetSymbol() {
     assertEquals(Symbol.WILD, wild.getSymbol());
     assertEquals(Symbol.WILD_DRAW_FOUR, four.getSymbol());
+  }
+
+  @Test
+  public void testExecuteAction() {
+    game.playCard(wild, ctrl);
+    assertEquals(Color.RED, game.getCurrentPlayedCard().getColor());
+
+    assertTrue(game.isDrawWellEmpty());
+    game.playCard(four, ctrl);
+    assertEquals(Color.RED, game.getCurrentPlayedCard().getColor());
+    four.executeAction(game, ctrl);
+    assertFalse(game.isDrawWellEmpty());
   }
 
   @Test

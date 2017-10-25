@@ -9,7 +9,7 @@ import model.IGameLogic;
  * @author Pedro Belmonte
  *
  */
-public class InvertCard extends AbstractColorCard implements ICard {
+public class InvertCard extends AbstractColorCard {
 
   /**
    * InvertCard constructor. Sets its color and symbol.

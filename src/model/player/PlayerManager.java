@@ -47,7 +47,7 @@ public class PlayerManager implements IPlayerManager {
     if (getPlayers().size() > 2) {
       direction = (direction.getValue() == -1) ? Direction.COUNTERCLOCKWISE : Direction.CLOCKWISE;
       int aux = currentPlayerNumber + direction.getValue();
-      aux = (aux > 0) ? aux : playerList.size() + aux;
+      aux = (aux >= 0) ? aux : playerList.size() + aux;
       nextPlayerNumber = aux % playerList.size();
     } else {
       skipPlayer();
@@ -58,7 +58,7 @@ public class PlayerManager implements IPlayerManager {
   public void startTurn() {
     currentPlayerNumber = nextPlayerNumber;
     int aux = currentPlayerNumber + direction.getValue();
-    aux = (aux > 0) ? aux : playerList.size() + aux;
+    aux = (aux >= 0) ? aux : playerList.size() + aux;
     nextPlayerNumber = aux % playerList.size();
     currentPlayer = playerList.get(currentPlayerNumber);
   }
@@ -66,8 +66,17 @@ public class PlayerManager implements IPlayerManager {
   @Override
   public void skipPlayer() {
     int aux = currentPlayerNumber + 2 * direction.getValue();
-    aux = (aux > 0) ? aux : playerList.size() + aux;
+    aux = (aux >= 0) ? aux : playerList.size() + aux;
     nextPlayerNumber = aux % playerList.size();
+  }
+
+  /**
+   * Returns the direction of the game.
+   * 
+   * @return Actual direction
+   */
+  public Direction getDirection() {
+    return direction;
   }
 
 }

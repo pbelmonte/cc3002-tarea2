@@ -9,7 +9,7 @@ import model.IGameLogic;
  * @author Pedro Belmonte
  *
  */
-public class DrawFourCard extends WildCard implements ICard{
+public class DrawFourCard extends WildCard {
 
   /**
    * DrawFourCard constructor. Sets the symbol to WILD_DRAW_FOUR.

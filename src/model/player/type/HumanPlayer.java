@@ -12,7 +12,7 @@ import model.card.type.NullCard;
  * @author Pedro Belmonte
  *
  */
-public class HumanPlayer extends AbstractPlayer implements IPlayer {
+public class HumanPlayer extends AbstractPlayer {
 
   /**
    * HumanPlayer constructor.
