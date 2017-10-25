@@ -28,7 +28,9 @@ public class PlayerListBuilder implements IPlayerListBuilder {
 
   @Override
   public ArrayList<IPlayer> buildPlayerList() {
-    return playerList;
+    ArrayList<IPlayer> list = playerList;
+    playerList = new ArrayList<IPlayer>();
+    return list;
   }
 
 }
